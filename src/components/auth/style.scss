@@ -1,15 +1,47 @@
 .root {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 100vh;
-    .form{
-        width: 80%;
-        .incitingText{
-            color: #1900D5;
-            margin-left: 7px;
-            cursor: pointer;
+    height: 95vh;
+    background: #F9F8F3;
+
+    h1 {
+        font-family: 'Oswald', 'Inter', Courier, monospace;
+        color: #0E0F15;
+    }
+
+    .form {
+        width: 60%;
+
+        // Стили для всех TextField внутри .form
+        .MuiTextField-root {
+            width: 65%;
+            margin-top: 16px;
+            margin-bottom: 8px;
+
+            // Стили для внутреннего input
+            .MuiOutlinedInput-input {
+                background-color: #F0F0F0;
+                border-radius: 15px;
+            }
+
+            // Стили для границы
+            .MuiOutlinedInput-root {
+                fieldset {
+                    border-color: #CCCCCC;
+                    border-radius: 15px;
+                }
+
+                &:hover fieldset {
+                    border-color: #1976d2;
+                }
+
+                &.Mui-focused fieldset {
+                    border-color: #1976d2;
+                }
+            }
         }
     }
 }

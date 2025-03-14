@@ -7,14 +7,14 @@ const RegisterPage: React.FC<IPropsRegister> = (props: IPropsRegister): JSX.Elem
 
   return (
     <>
-      <Typography variant="h2" fontFamily='poppins' textAlign='center'>Регистрация</Typography>
-      <Typography variant="body1" marginBottom={1.5} fontFamily='poppins' textAlign='center'>Введите данные для регистрации</Typography>
-      <TextField fullWidth={true} margin='normal' label="Username" variant="outlined" placeholder='Введите ваш Username' onChange={(e) => setUserName(e.target.value)}/>
+      <Typography variant="h6" fontFamily='Inter' textAlign='center'>Зарегистрируйтесь на нашем сайте, чтобы получить возможность оценивать статьи и публиковать их!</Typography>
       <TextField fullWidth={true} margin='normal' label="Email" variant="outlined" placeholder='Введите ваш email' onChange={(e) => setEmail(e.target.value)}/>
+      <TextField fullWidth={true} margin='normal' label="Username" variant="outlined" placeholder='Введите ваш Username' onChange={(e) => setUserName(e.target.value)}/>
       <TextField type='password' fullWidth={true} margin='normal' label="Password" variant="outlined" placeholder='Введите ваш пароль' onChange={(e) => setPassword(e.target.value)}/>
       <TextField type='password' fullWidth={true} margin='normal' label="Retry Password" variant="outlined" placeholder='Повторите ваш пароль' onChange={(e) => setRetryPassword(e.target.value)}/>
-      <Button type='submit' sx={{fontFamily:'poppins', marginTop:1.5, width:'60%', marginBottom:2}} variant="contained">Регистрация</Button>
-      <Typography variant="body1" sx={{fontFamily:'poppins'}}>Уже есть аккаунт?<span className='incitingText' onClick={() => {navigate('/login')}}>Войти</span></Typography>
+      <Button type='submit' sx={{fontFamily:'Inter', marginTop:1.5, width:'65%', marginBottom:2, background:'#0E0F15', borderRadius:'15px'}} variant="contained">Регистрация</Button>
+      <Typography variant="body1" sx={{fontFamily:'poppins', color:'#717070', fontSize:'3vh'}}>У вас уже есть аккаунт??</Typography>
+      <Button type='submit' sx={{fontFamily:'Inter', marginTop:1.5, width:'65%', backgroundColor: 'transparent', borderRadius:'15px', borderColor:'#0E0F15', color:'#0E0F15'}} variant="contained" onClick={() => {navigate('/login')}}>Войти</Button>
     </>
   );
 }

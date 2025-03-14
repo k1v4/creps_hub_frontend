@@ -38,12 +38,20 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
             }
         } else{
             if (password === retryPassword){
-                const userData = {
-                    email,
-                    password
+                try{
+                    const userData = {
+                        email,
+                        password
+                    }
+                        
+                    const newUserId = await instance.post('/api/v1/register', userData)
+                    await dispatch(login(newUserId.data))
+    
+                    navigate('/')
+                } catch(e){
+                    return e
                 }
-                    
-                const newUserId = await instance.post('/api/v1/register', userData)
+
             } else{
                 throw new Error(AppErrors.PasswordNotMatch)
             }
@@ -52,6 +60,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
 
     return (
         <div className='root'>
+            <h1>CREPS HUB</h1>
             <form className="form" onSubmit={handleSubmit}>
                 <Box
                     display='flex'
@@ -62,7 +71,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
                     margin='auto'
                     padding={5}
                     borderRadius={5}
-                    boxShadow={'5px 5px 10px #ccc'}
+                    bgcolor='#FFFFF8'
                 >
                     {
                         location.pathname === '/login' 
