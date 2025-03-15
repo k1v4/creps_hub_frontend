@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
-  }
+    background-color: #0E0F15;
+}
 
 .homeRoot{
     width: 100vw;
@@ -29,13 +30,23 @@ html, body {
 
     .main {
         flex: 1;
-        padding: 1% 3% 1% 3%;
+        padding: 1% 2% 1% 2%;
     }
 
     h1{
         margin: 0;
         margin-block-start: 0;
         margin-block-end: 0;
+    }
+
+    .slogan{
+        height: 3%;
+        display: flex;
+        justify-content: center; /* Горизонтальное выравнивание */
+        align-items: center;
+        font-family: Oswald;
+        color: #F9F8F3;
+        margin-bottom: 2%;
     }
 
     footer{
@@ -45,6 +56,45 @@ html, body {
         justify-content: center; /* Горизонтальное выравнивание */
         align-items: center;
         font-family: Oswald;
+        color: #F9F8F3;
+    }
+
+    .items-container {
+        width: 90%;
+    }
+      
+    .item {
+        margin-bottom: 2%;
+    }
+      
+    .article-content {
+        display: flex; // Используем flexbox для размещения картинки и текста
+        align-items: flex-start; // Выравниваем элементы по верхнему краю
+    }
+      
+    .article-image {
+        width: 200px; // Фиксированная ширина картинки
+        height: 150px; // Фиксированная высота картинки
+        object-fit: cover; // Обрезаем изображение, если оно не помещается
+        border-radius: 8px; // Скругляем углы
+        margin-right: 2vw; // Отступ между картинкой и текстом
+    }
+      
+    .article-text {
+        color: #F9F8F3;
+        font-family: Inter;
+    }
+      
+    .article-text h2 {
+        font-size: 24px; // Размер заголовка
+        color: #F9F8F3; // Цвет заголовка
+    }
+      
+    .article-meta {
+        display: flex;
+        flex-direction: column; // Автор и дата располагаются вертикально
+        justify-content: space-between;
+        font-size: 14px;
         color: #F9F8F3;
     }
 }

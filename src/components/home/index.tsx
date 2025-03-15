@@ -1,27 +1,126 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconButton, Button } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import './style.scss';
-import Add from '@mui/icons-material/Add'
+import Add from '@mui/icons-material/Add';
+import axios from 'axios'; // Импортируем axios (на будущее)
 
+// Тип для элемента статьи
+interface Article {
+  id: number;
+  title: string;
+  imageUrl: string;
+  date: string; // Дата в формате dd.mm.yyyy
+  author: string; // Имя автора
+}
 
 const Home = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  // Мок-данные
+  const mockArticles: Article[] = [
+    {
+      id: 1,
+      title: 'Статья 1',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '12.10.2023',
+      author: 'Иван Иванов',
+    },
+    {
+      id: 2,
+      title: 'Статья 2',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '15.10.2023',
+      author: 'Петр Петров',
+    },
+    {
+      id: 3,
+      title: 'Статья 3',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '18.10.2023',
+      author: 'Анна Сидорова',
+    },
+    {
+      id: 4,
+      title: 'Статья 4',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '20.10.2023',
+      author: 'Мария Кузнецова',
+    },
+    {
+      id: 5,
+      title: 'Статья 5',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '22.10.2023',
+      author: 'Сергей Смирнов',
+    },
+    {
+      id: 6,
+      title: 'Статья 6',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '25.10.2023',
+      author: 'Ольга Васильева',
+    },
+    {
+      id: 7,
+      title: 'Статья 7',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '28.10.2023',
+      author: 'Дмитрий Павлов',
+    },
+    {
+      id: 8,
+      title: 'Статья 8',
+      imageUrl: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg',
+      date: '30.10.2023',
+      author: 'Елена Николаева',
+    },
+  ];
+
+  // Загрузка данных при монтировании компонента
+  useEffect(() => {
+    // Временно используем мок-данные
+    setArticles(mockArticles);
+
+    // Если нужно переключиться на реальный запрос, раскомментируйте:
+    // fetchArticles();
+  }, []);
+
+  // Функция для загрузки статей (оставлена для будущего использования)
+  const fetchArticles = async () => {
+    try {
+      const limit = 8; // Количество статей для загрузки
+      const offset = 0; // Смещение (например, для пагинации)
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/articles?limit=${limit}&offset=${offset}`
+      );
+
+      // Устанавливаем данные в состояние
+      setArticles(response.data);
+    } catch (error) {
+      console.error('Ошибка при загрузке статей:', error);
+    }
+  };
+
   return (
     <div className='homeRoot'>
       <header>
         <h1>CREPS HUB</h1>
         <div className='buttons'>
-          <Button 
-            variant="contained" 
-            sx={{background: 'white', color: '#0E0F15', borderRadius: '15px' }} 
-            endIcon={<Add />}>Опубликовать статью</Button>
+          <Button
+            variant="contained"
+            sx={{ background: 'white', color: '#0E0F15', borderRadius: '15px' }}
+            endIcon={<Add />}
+          >
+            Опубликовать статью
+          </Button>
           <IconButton aria-label="delete" sx={{ color: 'white' }}>
-            <AccountCircle fontSize='large'/>
+            <AccountCircle fontSize='large' />
           </IconButton>
         </div>
       </header>
       <div className='main'>
-        <div style={{ width: '100%', height: '40vh', overflow: 'hidden' }}>
+        <div className='mainImg' style={{ width: '100%', height: '40vh', overflow: 'hidden', marginBottom: '2%' }}>
           <img
             src='https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/59357c316d1dbd99a8907cffd8a6b91b.jpg'
             alt="Описание изображения"
@@ -34,13 +133,30 @@ const Home = () => {
           />
         </div>
 
-        <h1>This is Home page</h1>
+        <h1 className='slogan'>Stressed. Depressed. But well dressed.</h1>
+
+        <div className='items-container'>
+          {articles.map((article) => (
+            <div key={article.id} className='item'>
+              <div className='article-content'>
+                <img src={article.imageUrl} alt={article.title} className='article-image' />
+                <div className='article-text'>
+                  <h2>{article.title}</h2>
+                  <div className='article-meta'>
+                    <span className='author'>{article.author}</span>
+                    <span className='date'>{article.date}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <footer>
         <h1>CREPS HUB</h1>
       </footer>
     </div>
   );
-}
+};
 
 export default Home;
