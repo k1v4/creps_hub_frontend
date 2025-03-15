@@ -26,7 +26,6 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
                 const userData = {
                     email,
                     password,
-                    app_id: 1
                 }
                     
                 const user = await instance.post('/api/v1/login', userData)

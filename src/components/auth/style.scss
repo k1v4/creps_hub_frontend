@@ -35,11 +35,26 @@
                 }
 
                 &:hover fieldset {
-                    border-color: #1976d2;
+                    border-color: #000; // Чёрная обводка при наведении
                 }
 
                 &.Mui-focused fieldset {
-                    border-color: #1976d2;
+                    border-color: #000; // Чёрная обводка при фокусе
+                }
+
+                // Стили для текста при фокусе
+                &.Mui-focused .MuiOutlinedInput-input {
+                    color: #000; // Чёрный текст при фокусе
+                }
+            }
+
+            // Стили для лейбла
+            .MuiInputLabel-root {
+                color: #000; // Чёрный цвет лейбла по умолчанию
+
+                // Стили для лейбла при фокусе
+                &.Mui-focused {
+                    color: #000; // Чёрный цвет лейбла при фокусе
                 }
             }
         }
