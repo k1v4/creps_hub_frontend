@@ -1,11 +1,15 @@
+html, body {
+    margin: 0;
+    background-color: #F9F8F3;
+}
+
 .root {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 95vh;
-    background: #F9F8F3;
+    height: 100%;
 
     h1 {
         font-family: 'Oswald', 'Inter', Courier, monospace;

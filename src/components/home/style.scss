@@ -1,11 +1,10 @@
 html, body {
     margin: 0;
-    background-color: #0E0F15;
 }
 
 .homeRoot{
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column; /* Располагаем элементы вертикально */
@@ -51,7 +50,7 @@ html, body {
 
     footer{
         background-color: #17181F;
-        height: 10%;
+        height: 12vh;
         display: flex;
         justify-content: center; /* Горизонтальное выравнивание */
         align-items: center;
@@ -64,6 +63,7 @@ html, body {
     }
       
     .item {
+        cursor: pointer;
         margin-bottom: 2%;
     }
       
@@ -93,8 +93,51 @@ html, body {
     .article-meta {
         display: flex;
         flex-direction: column; // Автор и дата располагаются вертикально
-        justify-content: space-between;
+            justify-content: space-between;
         font-size: 14px;
         color: #F9F8F3;
     }
+
+    .page-container {
+        position: relative; // Для позиционирования кнопки
+        height: 100%; // Занимаем всю высоту экрана
+        display: flex;
+        justify-content: center; // Центрируем содержимое по горизонтали
+        align-items: center; // Центрируем содержимое по вертикали
+        color: #F9F8F3;
+      }
+      
+      .back-button {
+        position: absolute; // Абсолютное позиционирование
+        top: 20px; // Отступ сверху
+        left: 20px; // Отступ слева
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      
+      .back-button:hover {
+        background-color: #0056b3; // Изменение цвета при наведении
+      }
+      
+      .center-content {
+        text-align: center;
+        max-width: 800px;
+        padding: 20px;
+      }
+      
+      .center-content h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      
+      .center-content p {
+        font-family: 'Inter';
+        font-size: 18px;
+        line-height: 1.6;
+      }    
 }

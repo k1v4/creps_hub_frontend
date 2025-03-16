@@ -40,13 +40,14 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
                 try{
                     const userData = {
                         email,
+                        userName,
                         password
                     }
                         
                     const newUserId = await instance.post('/api/v1/register', userData)
                     await dispatch(login(newUserId.data))
     
-                    navigate('/')
+                    navigate('/login')
                 } catch(e){
                     return e
                 }

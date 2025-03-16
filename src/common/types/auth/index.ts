@@ -20,3 +20,7 @@ export interface IAuthState{
 export interface IPublicUser{
     UserId: number | null
 }
+
+export interface IPropsGetArticle{
+    navigate: (to: string) => void
+}
