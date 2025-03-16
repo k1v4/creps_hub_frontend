@@ -5,9 +5,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import './style.scss';
 import Add from '@mui/icons-material/Add';
 import axios from 'axios'; // Импортируем axios (на будущее)
-import { Box } from '@mui/material';
-import Home from './homePage';
-import GetArticlePage from './article';
 
 // Тип для элемента статьи
 interface Article {
@@ -18,42 +15,30 @@ interface Article {
   author: string; // Имя автора
 }
 
-const MainHome = () => {
+const Profile = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
 
     return (
-    <div className='homeRoot'>
+    <div className='profileRoot'>
         <header>
-            <h1 className='logo' onClick={() => navigate('/')}>CREPS HUB</h1>
-            <div className='buttons'>
-                <Button
-                    variant="contained"
-                    sx={{ background: 'white', color: '#0E0F15', borderRadius: '15px' }}
-                    endIcon={<Add />}
-                >
-                Опубликовать статью
-                </Button>
-                <IconButton aria-label="delete" sx={{ color: 'white' }} onClick={() => navigate('/profile')}>
-                    <AccountCircle fontSize='large' />
-                </IconButton>
+            <h1 className='logo-profile' onClick={() => navigate('/')}>CREPS HUB</h1>
+            <div className='switch-buttons'>
+                
             </div>
         </header>
         <div className='main'>
-            <Box>
+            {/* <Box>
                     {
                         location.pathname === '/' 
                             ? <Home /> : location.pathname === '/article' 
                                 ? <GetArticlePage navigate={navigate}/> : null
                     }
-            </Box>
+            </Box> */}
       </div>
-      <footer>
-        <h1>CREPS HUB</h1>
-      </footer>
     </div>
   );
 };
 
-export default MainHome;
+export default Profile;

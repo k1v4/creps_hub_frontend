@@ -3,7 +3,7 @@ import MainHome from './components/home';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './utils/router/privateRoute';
 import AuthRootComponent from './components/auth';
-import GetArticlePage from './components/home/article';
+import Profile from './components/profile';
 
 
 function App() {
@@ -11,11 +11,13 @@ function App() {
     <div className="app">
       <Routes>
         <Route element={<PrivateRoute />}>
-          <Route path='/' element={<MainHome />}/>
-          <Route path='article' element={<MainHome />}/>
+          
         </Route>
+        <Route path='/' element={<MainHome />}/>
+        <Route path='article' element={<MainHome />}/>
         <Route path='login' element={<AuthRootComponent />}/>
         <Route path='register' element={<AuthRootComponent />}/>
+        <Route path='profile' element={<Profile />}/>
       </Routes>
     </div>
   );

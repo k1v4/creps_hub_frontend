@@ -1,17 +1,28 @@
-import React, { Fragment, JSX } from 'react';
+import React, { JSX } from 'react';
 import { IPropsGetArticle } from '../../../common/types/auth';
+import { Button } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JSX.Element => {
   const { navigate } = props;
 
   return (
     <div className='page-container'>
-      {/* Кнопка "Назад" */}
-      <button onClick={() => navigate('/')} className='back-button'>
+      <Button
+        variant="contained"
+        sx={{
+          background: 'transparent',
+          color: '#F9F8F3',
+          borderRadius: '15px',
+          border: '1px solid #F9F8F3', // Указываем ширину, стиль и цвет границы
+        }}
+        className='back-button'
+        onClick={() => navigate('/')}
+        startIcon={<ArrowBackIcon />}
+        >
         Назад
-      </button>
+        </Button>
 
-      {/* Центрированный текст с заголовком */}
       <div className='center-content'>
         <h1>Заголовок статьи</h1>
         <p>

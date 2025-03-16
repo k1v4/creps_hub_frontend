@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Button } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Add from '@mui/icons-material/Add';
 import axios from 'axios'; // Импортируем axios (на будущее)
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Тип для элемента статьи
 interface Article {
