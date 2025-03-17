@@ -174,7 +174,6 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                cursor: pointer;
     
                 img {
                     width: 100%; /* Занимает всю ширину контейнера */
@@ -193,5 +192,47 @@
                 }
             }
         }        
+    }
+
+    .articleMain{
+        .buttonAdd{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .articlesItems{
+            margin: 5vh 5vw;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); // 4 колонки с равной шириной
+            gap: 16px; 
+
+            .item {
+                width: 100%; // Ширина элемента будет адаптироваться под размеры сетки
+                height: auto; // Высота будет зависеть от содержимого
+                aspect-ratio: 1 / 1; // Сохраняет соотношение сторон 1:1 (квадрат)
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+    
+                img {
+                    width: 100%; /* Занимает всю ширину контейнера */
+                    height: 100%; /* Занимает всю высоту контейнера */
+                    object-fit: cover; /* Сохраняет пропорции и обрезает лишнее */
+                }
+                  
+                p {
+                    margin: 1vh 0; /* Убирает отступы у текста */
+                    font-size: 24px; /* Размер текста */
+                    text-align: center; /* Центрирует текст */
+                    color: #F9F8F3;
+                    font-family: 'Inter';
+                    font-weight: 500;
+                }
+            }
+        }  
     }
 }

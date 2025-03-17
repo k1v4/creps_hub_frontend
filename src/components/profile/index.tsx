@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import Personal from './personal';  
 import Collection from './collection';
+import Articles from './articles';
 
 
 
@@ -40,9 +41,7 @@ const Profile = () => {
       case 'collection':
         return <Collection />;
       case 'myArticles':
-        return <div>Мои статьи</div>;
-      case 'favourites':
-        return <div>Избранное</div>;
+        return <Articles />;
       case 'calendar':
         return <div>Календарь релизов</div>;
       default:
@@ -77,13 +76,6 @@ const Profile = () => {
               <input id='myArticles' type='radio' name='radio' checked={selectedButton === 'myArticles'} onChange={handleChange}/>
               <div className='radio-tile'>
                 <label htmlFor='myArticles'>Мои статьи</label>
-              </div>
-            </div>
-
-            <div className='input-container'>
-              <input id='favourites' type='radio' name='radio' checked={selectedButton === 'favourites'} onChange={handleChange}/>
-              <div className='radio-tile'>
-                <label htmlFor='favourites'>Избранное</label>
               </div>
             </div>
 
