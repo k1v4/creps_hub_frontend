@@ -82,4 +82,73 @@
         transform: scale(1.1);
         border: 1px solid var(--primary-color);
     }
+
+    .personalDataHeader {
+        align-self: flex-start; // Перемещает заголовок в левый верхний угол
+        margin: 0 0 2vh 0 ; // Убирает отступы по умолчанию
+        font-family: 'Inter';
+        font-weight: 400;
+        color: #191919;
+    }
+
+    .formPersonal{
+        margin: 3%;
+    }
+
+    .MuiTextField-root {
+        width: 100%;
+        margin-top: 16px;
+        margin-bottom: 8px;
+
+        // Стили для внутреннего input
+        .MuiOutlinedInput-input {
+            background-color: #F0F0F0;
+            border-radius: 15px;
+        }
+
+        // Стили для границы
+        .MuiOutlinedInput-root {
+            fieldset {
+                border-color: #CCCCCC;
+                border-radius: 15px;
+            }
+
+            &:hover fieldset {
+                border-color: #000; // Чёрная обводка при наведении
+            }
+
+            &.Mui-focused fieldset {
+                border-color: #000; // Чёрная обводка при фокусе
+            }
+
+            // Стили для текста при фокусе
+            &.Mui-focused .MuiOutlinedInput-input {
+                color: #000; // Чёрный текст при фокусе
+            }
+        }
+
+        // Стили для лейбла
+        .MuiInputLabel-root {
+            color: #000; // Чёрный цвет лейбла по умолчанию
+
+            // Стили для лейбла при фокусе
+            &.Mui-focused {
+                color: #000; // Чёрный цвет лейбла при фокусе
+            }
+        }
+    }
+
+    .userInfo {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1%;
+        width: 100%;
+        margin-bottom: 5vh;
+
+        .submitUserProfileChanges{
+            background-color: #191919;
+            color: #FFFFFF;
+            font-family: 'Inter';
+        }
+    }
 }

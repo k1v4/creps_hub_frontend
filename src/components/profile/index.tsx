@@ -2,6 +2,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import './style.scss';
 import React, { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
+import Personal from './personal';  
+
 
 
 // Тип для элемента статьи
@@ -28,6 +31,23 @@ const Profile = () => {
     console.log('Выбрана кнопка:', event.target.id); // Логируем выбор
     setSelectedButton(event.target.id);
   }
+
+  const renderContent = () => {
+    switch (selectedButton) {
+      case 'profile':
+        return <Personal />;
+      case 'collection':
+        return <div>Коллекция</div>;
+      case 'myArticles':
+        return <div>Мои статьи</div>;
+      case 'favourites':
+        return <div>Избранное</div>;
+      case 'calendar':
+        return <div>Календарь релизов</div>;
+      default:
+        return <div>Другой раздел</div>;
+    }
+  };
 
   return (
     <div className='profileRoot'>
@@ -77,13 +97,7 @@ const Profile = () => {
         </div>
       </header>
       <div className='main'>
-        {/* <Box>
-          {location.pathname === '/' ? (
-            <Home />
-          ) : location.pathname === '/article' ? (
-            <GetArticlePage navigate={navigate} />
-          ) : null}
-        </Box> */}
+        {renderContent()}
       </div>
     </div>
   );
