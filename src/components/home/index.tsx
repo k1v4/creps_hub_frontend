@@ -22,6 +22,7 @@ const MainHome = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
+    
 
     return (
     <div className='homeRoot'>
@@ -32,6 +33,7 @@ const MainHome = () => {
                     variant="contained"
                     sx={{ background: 'white', color: '#0E0F15', borderRadius: '15px' }}
                     endIcon={<Add />}
+                    onClick={() => navigate('/profile', { state: { selectedTab: 'myArticles' } })}
                 >
                 Опубликовать статью
                 </Button>

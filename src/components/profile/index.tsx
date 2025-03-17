@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton, Button } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Button } from '@mui/material';
 import './style.scss';
-import Add from '@mui/icons-material/Add';
-import axios from 'axios'; // Импортируем axios (на будущее)
+import React, { useState, useEffect } from 'react';
+
 
 // Тип для элемента статьи
 interface Article {
@@ -16,26 +14,76 @@ interface Article {
 }
 
 const Profile = () => {
-    const location = useLocation()
-    const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [selectedButton, setSelectedButton] = useState('profile'); // Дефолтное значение
 
+  useEffect(() => {
+    if (location.state?.selectedTab) {
+      setSelectedButton(location.state.selectedTab);
+    }
+  }, [location.state]);
 
-    return (
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Выбрана кнопка:', event.target.id); // Логируем выбор
+    setSelectedButton(event.target.id);
+  }
+
+  return (
     <div className='profileRoot'>
-        <header>
-            <h1 className='logo-profile' onClick={() => navigate('/')}>CREPS HUB</h1>
-            <div className='switch-buttons'>
-                
+      <header>
+        <h1 className='logo-profile' onClick={() => navigate('/')}>
+          CREPS HUB
+        </h1>
+        <div className='switch-buttons'>
+          <div className='radio-tile-group'>
+
+            <div className='input-container'>
+              <input id='profile' type='radio' name='radio' checked={selectedButton === 'profile'} onChange={handleChange} />
+              <div className='radio-tile'>
+                <label htmlFor='profile'>Профиль</label>
+              </div>
             </div>
-        </header>
-        <div className='main'>
-            {/* <Box>
-                    {
-                        location.pathname === '/' 
-                            ? <Home /> : location.pathname === '/article' 
-                                ? <GetArticlePage navigate={navigate}/> : null
-                    }
-            </Box> */}
+
+            <div className='input-container'>
+              <input id='collection' type='radio' name='radio' checked={selectedButton === 'collection'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='collection'>Коллекция</label>
+              </div>
+            </div>
+
+            <div className='input-container'>
+              <input id='myArticles' type='radio' name='radio' checked={selectedButton === 'myArticles'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='myArticles'>Мои статьи</label>
+              </div>
+            </div>
+
+            <div className='input-container'>
+              <input id='favourites' type='radio' name='radio' checked={selectedButton === 'favourites'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='favourites'>Избранное</label>
+              </div>
+            </div>
+
+            <div className='input-container'>
+              <input id='calendar' type='radio' name='radio' checked={selectedButton === 'calendar'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='calendar'>Календарь релизов</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+      <div className='main'>
+        {/* <Box>
+          {location.pathname === '/' ? (
+            <Home />
+          ) : location.pathname === '/article' ? (
+            <GetArticlePage navigate={navigate} />
+          ) : null}
+        </Box> */}
       </div>
     </div>
   );
