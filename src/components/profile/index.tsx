@@ -4,6 +4,7 @@ import './style.scss';
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import Personal from './personal';  
+import Collection from './collection';
 
 
 
@@ -37,7 +38,7 @@ const Profile = () => {
       case 'profile':
         return <Personal />;
       case 'collection':
-        return <div>Коллекция</div>;
+        return <Collection />;
       case 'myArticles':
         return <div>Мои статьи</div>;
       case 'favourites':
