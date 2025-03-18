@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import Personal from './personal';  
 import Collection from './collection';
 import Articles from './articles';
+import Calendar from './calendar';
 
 
 
@@ -43,7 +44,7 @@ const Profile = () => {
       case 'myArticles':
         return <Articles />;
       case 'calendar':
-        return <div>Календарь релизов</div>;
+        return <Calendar />
       default:
         return <div>Другой раздел</div>;
     }

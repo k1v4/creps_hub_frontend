@@ -235,4 +235,20 @@
             }
         }  
     }
+
+    .calendarContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+
+        .highlighted {
+            background-color: black;
+            color: white; 
+            border-radius: 50%;
+        }
+
+        
+    }
 }
