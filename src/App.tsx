@@ -17,7 +17,6 @@ function App() {
         </Route>
         <Route path='login' element={<AuthRootComponent />}/>
         <Route path='register' element={<AuthRootComponent />}/>
-        
       </Routes>
     </div>
   );

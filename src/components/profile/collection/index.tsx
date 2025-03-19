@@ -4,10 +4,11 @@ import React, { JSX, useEffect, useState } from 'react';
 import AddShoeForm from './add';
 import { instance } from '../../../utils/axios';
 import { useAuth } from '../../../context/AuthContext';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Тип для элемента коллекции
 interface Item {
-  id: string;
+  id: number;
   name: string;
   url: string;
 }
@@ -44,6 +45,34 @@ const Collection: React.FC = (): JSX.Element => {
     setShowHello(!showHello);
   };
 
+  const handleDelete = async (id: number) => {
+    const tokens = getTokens();
+    if (!tokens?.accessToken) {
+      alert('Ошибка аутентификации. Пожалуйста, войдите снова.');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:8081/api/v1/shoes/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Ошибка при удалении статьи');
+      }
+  
+      // Удаляем статью из списка
+      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      console.log('Статья успешно удалена');
+    } catch (error) {
+      console.error('Ошибка при удалении статьи:', error);
+      alert('Произошла ошибка при удалении статьи.');
+    }
+  };
+
   return (
     <div className='collectionMain'>
       <div className='buttonAdd'>
@@ -72,7 +101,18 @@ const Collection: React.FC = (): JSX.Element => {
           <div className="collectionItems">
             {items.map((item) => (
               <div className="item" key={item.id}>
-                <img src={item.url} alt={item.name} />
+                <div className="imageContainer">
+                  <img src={item.url} alt={item.name} />
+                  <span
+                    className="deleteIcon"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Останавливаем всплытие события
+                      handleDelete(item.id); // Вызываем функцию удаления
+                    }}
+                  >
+                    <DeleteIcon /> {/* Иконка корзины из MUI */}
+                  </span>
+                </div>
                 <p>{item.name}</p>
               </div>
             ))}
