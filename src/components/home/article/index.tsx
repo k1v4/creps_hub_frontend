@@ -1,10 +1,30 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { IPropsGetArticle } from '../../../common/types/auth';
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JSX.Element => {
   const { navigate } = props;
+  const { id } = useParams<{ id: string }>(); // Достаем articleId из пути
+  const [article, setArticle] = useState<{ name: string; text: string } | null>(null);
+
+  useEffect(() => {
+    if (id) {
+      // Запрос на сервер для получения данных статьи по articleId
+      fetch(`http://localhost:8082/api/v1/articles/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          setArticle({
+            name: data.name,
+            text: data.text,
+          });
+        })
+        .catch(error => {
+          console.error('Ошибка при загрузке статьи:', error);
+        });
+    }
+  }, [id]);
 
   return (
     <div className='page-container'>
@@ -24,10 +44,14 @@ const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JS
       </Button>
 
       <div className='center-content'>
-        <h1>Заголовок статьи</h1>
-        <p>
-          Текст статьи. Здесь может быть много текста, который будет занимать центральную часть страницы.
-        </p>
+        {article ? (
+          <>
+            <h1>{article.name}</h1>
+            <p>{article.text}</p>
+          </>
+        ) : (
+          <p>Загрузка статьи...</p>
+        )}
       </div>
     </div>
   );

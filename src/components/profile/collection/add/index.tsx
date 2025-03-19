@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add'; // Импортируем иконку плюса
+import AddIcon from '@mui/icons-material/Add';
+import { useAuth } from '../../../../context/AuthContext'; // Импортируем useAuth для получения токена
 
 const AddShoeForm: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [photo, setPhoto] = useState<File | null>(null);
+  const { getTokens } = useAuth(); // Получаем токены из контекста
 
+  // Обработчики изменений полей
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -21,14 +24,67 @@ const AddShoeForm: React.FC = () => {
     }
   };
 
-  const handlePublish = () => {
-    console.log('Заголовок:', title);
-    console.log('Краткое описание:', description);
-    if (photo) {
-      console.log('Фото:', photo.name);
+  // Функция для чтения файла как base64
+  const readFileAsBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = (reader.result as string).split(',')[1]; // Убираем префикс "data:image/..."
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file); // Читаем файл как Data URL
+    });
+  };
+
+  // Обработчик публикации
+  const handlePublish = async () => {
+    if (!photo) {
+      alert('Пожалуйста, загрузите фото.');
+      return;
+    }
+
+    try {
+      // Читаем фото как base64
+      const imageData = await readFileAsBase64(photo);
+
+      // Получаем JWT-токен
+      const tokens = getTokens();
+      if (!tokens?.accessToken) {
+        alert('Ошибка аутентификации. Пожалуйста, войдите снова.');
+        return;
+      }
+
+      // Отправляем данные на сервер
+      const response = await fetch('http://localhost:8081/api/v1/shoes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+        body: JSON.stringify({
+          name: title, // Название обуви
+          image_data: imageData, // Изображение в формате base64
+          image_name: photo.name, // Имя файла с расширением
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при отправке данных на сервер');
+      }
+
+      const result = await response.json();
+      console.log('Успешно отправлено:', result);
+
+      // Очищаем форму после успешной отправки
+      handleCancel();
+    } catch (error) {
+      console.error('Ошибка:', error);
+      alert('Произошла ошибка при отправке данных.');
     }
   };
 
+  // Обработчик отмены
   const handleCancel = () => {
     setTitle('');
     setDescription('');
@@ -69,13 +125,15 @@ const AddShoeForm: React.FC = () => {
           </label>
         </div>
 
-        {/* Поле для текста статьи */}
+        {/* Поле для названия */}
         <TextField
           margin="normal"
           label="Введите название пары"
           variant="outlined"
           placeholder="Введите название пары"
           fullWidth
+          value={title}
+          onChange={handleTitleChange}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -125,7 +183,7 @@ const AddShoeForm: React.FC = () => {
             onClick={handleCancel}
             sx={{
               backgroundColor: '#F9F8F3',
-              color: '#0E0F15',
+              color: '#FFFFFF',
               fontFamily: 'Inter',
               borderRadius: '15px',
             }}

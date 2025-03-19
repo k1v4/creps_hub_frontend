@@ -153,47 +153,58 @@
         }
     }
 
-    .collectionMain{
-        .buttonAdd{
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    .collectionMain {
+        .buttonAdd {
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
-
-        .collectionItems{
-            margin: 5vh 5vw;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); // 4 колонки с равной шириной
-            gap: 16px; 
-
-            .item {
-                width: 100%; // Ширина элемента будет адаптироваться под размеры сетки
-                height: auto; // Высота будет зависеть от содержимого
-                aspect-ratio: 1 / 1; // Сохраняет соотношение сторон 1:1 (квадрат)
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-    
-                img {
-                    width: 100%; /* Занимает всю ширину контейнера */
-                    height: 100%; /* Занимает всю высоту контейнера */
-                    object-fit: cover; /* Сохраняет пропорции и обрезает лишнее */
-                    border-radius: 20px;
-                }
-                  
-                p {
-                    margin: 1vh 0; /* Убирает отступы у текста */
-                    font-size: 24px; /* Размер текста */
-                    text-align: center; /* Центрирует текст */
-                    color: #F9F8F3;
-                    font-family: 'Inter';
-                    font-weight: 500;
-                }
+      
+        .collectionItems {
+          margin: 5vh 5vw;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr); // 4 колонки с равной шириной
+          gap: 16px;
+      
+          .item {
+            width: 100%; 
+            height: 0; 
+            padding-bottom: 100%;
+            position: relative; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+      
+            img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 20px;
             }
-        }        
-    }
+      
+            p {
+              position: absolute;
+              bottom: 0; 
+              margin: 0;
+              padding: 8px;
+              width: 100%;
+              font-size: 24px;
+              text-align: center;
+              color: #F9F8F3;
+              font-family: 'Inter';
+              font-weight: 500;
+              background-color: rgba(0, 0, 0, 0.5); 
+              box-sizing: border-box;
+            }
+          }
+        }
+      }
 
     .articleMain{
         .buttonAdd{
@@ -209,9 +220,9 @@
             gap: 16px; 
 
             .item {
-                width: 100%; // Ширина элемента будет адаптироваться под размеры сетки
-                height: auto; // Высота будет зависеть от содержимого
-                aspect-ratio: 1 / 1; // Сохраняет соотношение сторон 1:1 (квадрат)
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1;
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
@@ -220,15 +231,15 @@
                 cursor: pointer;
     
                 img {
-                    width: 100%; /* Занимает всю ширину контейнера */
-                    height: 100%; /* Занимает всю высоту контейнера */
-                    object-fit: cover; /* Сохраняет пропорции и обрезает лишнее */
+                    width: 100%; 
+                    height: 100%; 
+                    object-fit: cover;
                 }
                   
                 p {
-                    margin: 1vh 0; /* Убирает отступы у текста */
-                    font-size: 24px; /* Размер текста */
-                    text-align: center; /* Центрирует текст */
+                    margin: 1vh 0; 
+                    font-size: 24px;
+                    text-align: center;
                     color: #F9F8F3;
                     font-family: 'Inter';
                     font-weight: 500;

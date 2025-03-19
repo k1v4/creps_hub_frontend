@@ -1,57 +1,46 @@
 import { Add } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-import React, { JSX, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import AddShoeForm from './add';
+import { instance } from '../../../utils/axios';
+import { useAuth } from '../../../context/AuthContext';
 
 // Тип для элемента коллекции
 interface Item {
-  id: number;
+  id: string;
   name: string;
   url: string;
 }
 
 const Collection: React.FC = (): JSX.Element => {
-  // Моковый массив данных
-  const mockItems: Item[] = [
-    {
-      id: 1,
-      name: 'Nike air force 1 black',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-    {
-      id: 2,
-      name: 'Кроссовки 2',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-    {
-      id: 3,
-      name: 'Кроссовки 3',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-    {
-      id: 4,
-      name: 'Кроссовки 4',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-    {
-      id: 5,
-      name: 'Кроссовки 5',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-    {
-      id: 6,
-      name: 'Кроссовки 6',
-      url: 'https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png',
-    },
-  ];
-
-  // Состояние для хранения данных
-  const [items, setItems] = useState<Item[]>(mockItems);
+  const [items, setItems] = useState<Item[]>([]);
   const [showHello, setShowHello] = useState<boolean>(false);
+  const { getTokens } = useAuth();
+
+  useEffect(() => {
+    const tokens = getTokens();
+    if (!tokens?.accessToken) return; // Не выполняем запрос, если токен отсутствует
   
-    // Обработчик нажатия на кнопку
+    const fetchShoes = async () => {
+      try {
+        const response = await instance.get('http://localhost:8081/api/v1/shoes', {
+          headers: { Authorization: `Bearer ${tokens.accessToken}` },
+        });
+        const fetchedItems = response.data.shoes.map((shoe: any) => ({
+          id: shoe.shoeId,
+          name: shoe.name,
+          url: shoe.imageUrl,
+        }));
+        setItems(fetchedItems);
+      } catch (error) {
+        console.error('Ошибка при загрузке обуви:', error);
+      }
+    };
+  
+    fetchShoes();
+  }, [getTokens]);
+
   const handleAddShoe = () => {
-      // Переключаем состояние
     setShowHello(!showHello);
   };
 
@@ -77,17 +66,17 @@ const Collection: React.FC = (): JSX.Element => {
         </Button>
       </div>
       <div>
-        {showHello ? ( // Условный рендеринг
+        {showHello ? (
           <AddShoeForm />
         ) : (
-        <div className="collectionItems">
-          {items.map((item) => (
-            <div className="item" key={item.id}>
-              <img src={item.url} alt={item.name} />
-              <p>{item.name}</p>
-            </div>
-          ))}
-        </div>
+          <div className="collectionItems">
+            {items.map((item) => (
+              <div className="item" key={item.id}>
+                <img src={item.url} alt={item.name} />
+                <p>{item.name}</p>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
