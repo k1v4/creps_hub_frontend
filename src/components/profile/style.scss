@@ -82,4 +82,195 @@
         transform: scale(1.1);
         border: 1px solid var(--primary-color);
     }
+
+    .personalDataHeader {
+        align-self: flex-start; // Перемещает заголовок в левый верхний угол
+        margin: 0 0 2vh 0 ; // Убирает отступы по умолчанию
+        font-family: 'Inter';
+        font-weight: 400;
+        color: #191919;
+    }
+
+    .formPersonal{
+        margin: 3%;
+    }
+
+    .userInfo {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1%;
+        width: 100%;
+        margin-bottom: 5vh;
+
+        .submitUserProfileChanges{
+            background-color: #191919;
+            color: #FFFFFF;
+            font-family: 'Inter';
+        }
+
+        .MuiTextField-root {
+            width: 100%;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: #F9F8F3;
+    
+            // Стили для внутреннего input
+            .MuiOutlinedInput-input {
+                background-color: #fff;
+                border-radius: 15px;
+            }
+    
+            // Стили для границы
+            .MuiOutlinedInput-root {
+                fieldset {
+                    border-color: #CCCCCC;
+                    border-radius: 15px;
+                }
+    
+                &:hover fieldset {
+                    border-color: #000; // Чёрная обводка при наведении
+                }
+    
+                &.Mui-focused fieldset {
+                    border-color: #000; // Чёрная обводка при фокусе
+                }
+    
+                // Стили для текста при фокусе
+                &.Mui-focused .MuiOutlinedInput-input {
+                    color: #000; // Чёрный текст при фокусе
+                }
+            }
+    
+            // Стили для лейбла
+            .MuiInputLabel-root {
+                color: #000; // Чёрный цвет лейбла по умолчанию
+    
+                // Стили для лейбла при фокусе
+                &.Mui-focused {
+                    color: #000; // Чёрный цвет лейбла при фокусе
+                }
+            }
+        }
+    }
+
+    .collectionMain{
+        .buttonAdd{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .collectionItems{
+            margin: 5vh 5vw;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); // 4 колонки с равной шириной
+            gap: 16px; 
+
+            .item {
+                width: 100%; // Ширина элемента будет адаптироваться под размеры сетки
+                height: auto; // Высота будет зависеть от содержимого
+                aspect-ratio: 1 / 1; // Сохраняет соотношение сторон 1:1 (квадрат)
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+    
+                img {
+                    width: 100%; /* Занимает всю ширину контейнера */
+                    height: 100%; /* Занимает всю высоту контейнера */
+                    object-fit: cover; /* Сохраняет пропорции и обрезает лишнее */
+                    border-radius: 20px;
+                }
+                  
+                p {
+                    margin: 1vh 0; /* Убирает отступы у текста */
+                    font-size: 24px; /* Размер текста */
+                    text-align: center; /* Центрирует текст */
+                    color: #F9F8F3;
+                    font-family: 'Inter';
+                    font-weight: 500;
+                }
+            }
+        }        
+    }
+
+    .articleMain{
+        .buttonAdd{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .articlesItems{
+            margin: 5vh 5vw;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); // 4 колонки с равной шириной
+            gap: 16px; 
+
+            .item {
+                width: 100%; // Ширина элемента будет адаптироваться под размеры сетки
+                height: auto; // Высота будет зависеть от содержимого
+                aspect-ratio: 1 / 1; // Сохраняет соотношение сторон 1:1 (квадрат)
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+    
+                img {
+                    width: 100%; /* Занимает всю ширину контейнера */
+                    height: 100%; /* Занимает всю высоту контейнера */
+                    object-fit: cover; /* Сохраняет пропорции и обрезает лишнее */
+                }
+                  
+                p {
+                    margin: 1vh 0; /* Убирает отступы у текста */
+                    font-size: 24px; /* Размер текста */
+                    text-align: center; /* Центрирует текст */
+                    color: #F9F8F3;
+                    font-family: 'Inter';
+                    font-weight: 500;
+                }
+            }
+        } 
+    }
+
+    .addArticle{
+        margin: 3%;  
+        padding: 1vh 5vw;      
+
+        .addButtons{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); // 4 колонки с равной шириной
+            gap: 16px; 
+
+            .add{
+                background-color: #F9F8F3;
+                border-radius: 15px;
+                color: #000000;
+            }
+
+            .cancel{
+                background-color: transparent;
+                border: 1px solid #F9F8F3;
+                border-radius: 15px;
+            }
+        }
+    }
+
+    .calendarContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+
+        .highlighted {
+            background-color: black;
+            color: white; 
+            border-radius: 50%;
+        }
+    }
 }

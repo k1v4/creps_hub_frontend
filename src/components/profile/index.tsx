@@ -1,7 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
 import './style.scss';
 import React, { useState, useEffect } from 'react';
+import Personal from './personal';  
+import Collection from './collection';
+import Articles from './articles';
+import Calendar from './calendar';
+
 
 
 // Тип для элемента статьи
@@ -28,6 +32,21 @@ const Profile = () => {
     console.log('Выбрана кнопка:', event.target.id); // Логируем выбор
     setSelectedButton(event.target.id);
   }
+
+  const renderContent = () => {
+    switch (selectedButton) {
+      case 'profile':
+        return <Personal />;
+      case 'collection':
+        return <Collection />;
+      case 'myArticles':
+        return <Articles />;
+      case 'calendar':
+        return <Calendar />
+      default:
+        return <div>Другой раздел</div>;
+    }
+  };
 
   return (
     <div className='profileRoot'>
@@ -60,13 +79,6 @@ const Profile = () => {
             </div>
 
             <div className='input-container'>
-              <input id='favourites' type='radio' name='radio' checked={selectedButton === 'favourites'} onChange={handleChange}/>
-              <div className='radio-tile'>
-                <label htmlFor='favourites'>Избранное</label>
-              </div>
-            </div>
-
-            <div className='input-container'>
               <input id='calendar' type='radio' name='radio' checked={selectedButton === 'calendar'} onChange={handleChange}/>
               <div className='radio-tile'>
                 <label htmlFor='calendar'>Календарь релизов</label>
@@ -77,13 +89,7 @@ const Profile = () => {
         </div>
       </header>
       <div className='main'>
-        {/* <Box>
-          {location.pathname === '/' ? (
-            <Home />
-          ) : location.pathname === '/article' ? (
-            <GetArticlePage navigate={navigate} />
-          ) : null}
-        </Box> */}
+        {renderContent()}
       </div>
     </div>
   );

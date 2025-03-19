@@ -19,9 +19,9 @@ const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JS
         className='back-button'
         onClick={() => navigate('/')}
         startIcon={<ArrowBackIcon />}
-        >
+      >
         Назад
-        </Button>
+      </Button>
 
       <div className='center-content'>
         <h1>Заголовок статьи</h1>
