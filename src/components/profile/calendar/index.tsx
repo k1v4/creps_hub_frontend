@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Badge } from '@mui/material';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
-import dayjs, { Dayjs } from 'dayjs'; // Импортируем Dayjs
+import dayjs, { Dayjs } from 'dayjs';
 
 // Тип для даты
 interface HighlightedDate {
   id: number;
-  date: Dayjs; // Используем Dayjs вместо Date
+  date: Dayjs;
 }
 
 // Моковые данные из бэкенда
 const highlightedDates: HighlightedDate[] = [
-  { id: 1, date: dayjs(new Date(2025, 2, 15)) }, // 15 октября 2023
-  { id: 2, date: dayjs(new Date(2025, 9, 20)) }, // 20 октября 2023
-  { id: 3, date: dayjs(new Date(2025, 9, 25)) }, // 25 октября 2023
-  { id: 4, date: dayjs(new Date(2025, 10, 5)) }, // 5 ноября 2023
-  { id: 5, date: dayjs(new Date(2025, 0, 10)) }, // 10 января 2024
+  { id: 1, date: dayjs(new Date(2025, 2, 15)) },
+  { id: 2, date: dayjs(new Date(2023, 9, 20)) },
+  { id: 3, date: dayjs(new Date(2025, 2, 25)) },
 ];
 
 // Кастомизация для подсветки дат
@@ -27,7 +25,6 @@ const ServerDay = (
 ) => {
   const { highlightedDates = [], day, outsideCurrentMonth, ...other } = props;
 
-  // Проверяем, должна ли дата быть подсвечена
   const isHighlighted = highlightedDates.some(
     (highlighted) =>
       highlighted.date.isSame(day, 'year') &&
@@ -39,17 +36,18 @@ const ServerDay = (
     <Badge
       key={day.toString()}
       overlap="circular"
-      badgeContent={isHighlighted ? '●' : undefined} // Используем символ кружка
-      color="primary" // Цвет кружка
+      badgeContent={isHighlighted ? '●' : undefined}
+      color="primary"
     >
       <PickersDay
         {...other}
         outsideCurrentMonth={outsideCurrentMonth}
         day={day}
+        disabled={outsideCurrentMonth}
         sx={{
-          backgroundColor: isHighlighted ? 'black' : 'transparent', // Чёрный фон для подсвеченных дат
-          color: isHighlighted ? 'white' : 'black', // Белый текст для подсвеченных дат
-          borderRadius: '50%', // Круглая форма
+          backgroundColor: isHighlighted ? 'black' : 'transparent',
+          color: isHighlighted ? 'white' : 'black',
+          borderRadius: '50%',
         }}
       />
     </Badge>
@@ -57,19 +55,36 @@ const ServerDay = (
 };
 
 const Calendar: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs()); // Используем Dayjs
-  const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs()); // Текущий месяц
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+  const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs());
 
-  // Фильтруем подсвеченные даты по текущему месяцу и году
+  useEffect(() => {
+    const initialMonth = dayjs();
+    setCurrentMonth(initialMonth);
+    console.log('Текущий месяц:', initialMonth.format('MMMM YYYY'));
+  }, []);
+
   const filteredHighlightedDates = highlightedDates.filter(
     (item) =>
       item.date.isSame(currentMonth, 'year') &&
       item.date.isSame(currentMonth, 'month')
   );
 
-  // Обработчик изменения месяца
-  const handleMonthChange = (date: Dayjs) => {
-    setCurrentMonth(date);
+  const handleDateChange = (date: Dayjs | null) => {
+    if (date) {
+      const highlightedDate = highlightedDates.find(
+        (highlighted) =>
+          highlighted.date.isSame(date, 'year') &&
+          highlighted.date.isSame(date, 'month') &&
+          highlighted.date.isSame(date, 'day')
+      );
+
+      if (highlightedDate) {
+        setSelectedDate(date);
+        console.log('Выбрана дата:', date.format('DD.MM.YYYY'));
+        console.log('ID подсвеченной даты:', highlightedDate.id);
+      }
+    }
   };
 
   return (
@@ -83,14 +98,16 @@ const Calendar: React.FC = () => {
             backgroundColor: 'white',
           }}
           value={selectedDate}
-          onChange={(newValue: Dayjs | null) => setSelectedDate(newValue)}
-          onMonthChange={handleMonthChange} // Обработчик изменения месяца
+          onChange={handleDateChange}
+          disableFuture
+          disablePast
+          views={['day']}
           slots={{
-            day: ServerDay, // Переопределяем компонент для отображения дней
+            day: ServerDay,
           }}
           slotProps={{
             day: {
-              highlightedDates: filteredHighlightedDates, // Передаем отфильтрованные подсвеченные даты
+              highlightedDates: filteredHighlightedDates,
             } as any,
           }}
         />

@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
 import './style.scss';
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
 import Personal from './personal';  
 import Collection from './collection';
 import Articles from './articles';

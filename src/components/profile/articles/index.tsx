@@ -1,6 +1,7 @@
 import { Add } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { JSX, useState } from 'react';
+import FashionWeekForm from './add';
 
 // Тип для элемента коллекции
 interface Item {
@@ -10,7 +11,6 @@ interface Item {
 }
 
 const Articles: React.FC = (): JSX.Element => {
-
   const mockItems: Item[] = [
     {
       id: 1,
@@ -46,35 +46,50 @@ const Articles: React.FC = (): JSX.Element => {
 
   // Состояние для хранения данных
   const [items, setItems] = useState<Item[]>(mockItems);
+  // Состояние для управления отображением
+  const [showHello, setShowHello] = useState<boolean>(false);
+
+  // Обработчик нажатия на кнопку
+  const handleAddArticle = () => {
+    // Переключаем состояние
+    setShowHello(!showHello);
+  };
 
   return (
     <div className='articleMain'>
-        <div className='buttonAdd'>
-            <Button
-                type='submit'
-                sx={{
-                    fontFamily: 'Inter',
-                    width: '15vw',
-                    backgroundColor: '#F9F8F3',
-                    borderRadius: '15px',
-                    borderColor: '#fff',
-                    color: '#0E0F15',
-                }}
-                variant="contained"
-                className='addShoes'
-                endIcon={<Add />}
-            >
-                Добавить статью 
-            </Button>
+      <div className='buttonAdd'>
+        <Button
+          type='submit'
+          sx={{
+            fontFamily: 'Inter',
+            width: '15vw',
+            backgroundColor: '#F9F8F3',
+            borderRadius: '15px',
+            borderColor: '#fff',
+            color: '#0E0F15',
+          }}
+          variant='contained'
+          className='addShoes'
+          endIcon={<Add />}
+          onClick={handleAddArticle} // Добавляем обработчик нажатия
+        >
+          {showHello ? 'Показать статьи' : 'Добавить статью'}
+        </Button>
       </div>
-      <div className="articlesItems">
-        {items.map((item) => (
-          <div className="item" key={item.id}>
-            <img src={item.url} alt={item.name} />
-            <p>{item.name}</p>
+      <div>
+        {showHello ? ( // Условный рендеринг
+          <FashionWeekForm />
+        ) : (
+          <div className='articlesItems'>
+            {items.map((item) => (
+              <div className='item' key={item.id}>
+                <img src={item.url} alt={item.name} />
+                <p>{item.name}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>        
+        )}
+      </div>
     </div>
   );
 };

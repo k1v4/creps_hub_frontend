@@ -95,49 +95,6 @@
         margin: 3%;
     }
 
-    .MuiTextField-root {
-        width: 100%;
-        margin-top: 16px;
-        margin-bottom: 8px;
-
-        // Стили для внутреннего input
-        .MuiOutlinedInput-input {
-            background-color: #F0F0F0;
-            border-radius: 15px;
-        }
-
-        // Стили для границы
-        .MuiOutlinedInput-root {
-            fieldset {
-                border-color: #CCCCCC;
-                border-radius: 15px;
-            }
-
-            &:hover fieldset {
-                border-color: #000; // Чёрная обводка при наведении
-            }
-
-            &.Mui-focused fieldset {
-                border-color: #000; // Чёрная обводка при фокусе
-            }
-
-            // Стили для текста при фокусе
-            &.Mui-focused .MuiOutlinedInput-input {
-                color: #000; // Чёрный текст при фокусе
-            }
-        }
-
-        // Стили для лейбла
-        .MuiInputLabel-root {
-            color: #000; // Чёрный цвет лейбла по умолчанию
-
-            // Стили для лейбла при фокусе
-            &.Mui-focused {
-                color: #000; // Чёрный цвет лейбла при фокусе
-            }
-        }
-    }
-
     .userInfo {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -149,6 +106,50 @@
             background-color: #191919;
             color: #FFFFFF;
             font-family: 'Inter';
+        }
+
+        .MuiTextField-root {
+            width: 100%;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: #F9F8F3;
+    
+            // Стили для внутреннего input
+            .MuiOutlinedInput-input {
+                background-color: #fff;
+                border-radius: 15px;
+            }
+    
+            // Стили для границы
+            .MuiOutlinedInput-root {
+                fieldset {
+                    border-color: #CCCCCC;
+                    border-radius: 15px;
+                }
+    
+                &:hover fieldset {
+                    border-color: #000; // Чёрная обводка при наведении
+                }
+    
+                &.Mui-focused fieldset {
+                    border-color: #000; // Чёрная обводка при фокусе
+                }
+    
+                // Стили для текста при фокусе
+                &.Mui-focused .MuiOutlinedInput-input {
+                    color: #000; // Чёрный текст при фокусе
+                }
+            }
+    
+            // Стили для лейбла
+            .MuiInputLabel-root {
+                color: #000; // Чёрный цвет лейбла по умолчанию
+    
+                // Стили для лейбла при фокусе
+                &.Mui-focused {
+                    color: #000; // Чёрный цвет лейбла при фокусе
+                }
+            }
         }
     }
 
@@ -233,7 +234,30 @@
                     font-weight: 500;
                 }
             }
-        }  
+        } 
+    }
+
+    .addArticle{
+        margin: 3%;  
+        padding: 1vh 5vw;      
+
+        .addButtons{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); // 4 колонки с равной шириной
+            gap: 16px; 
+
+            .add{
+                background-color: #F9F8F3;
+                border-radius: 15px;
+                color: #000000;
+            }
+
+            .cancel{
+                background-color: transparent;
+                border: 1px solid #F9F8F3;
+                border-radius: 15px;
+            }
+        }
     }
 
     .calendarContainer{
@@ -248,7 +272,5 @@
             color: white; 
             border-radius: 50%;
         }
-
-        
     }
 }
