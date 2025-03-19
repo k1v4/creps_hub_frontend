@@ -1,6 +1,8 @@
 import { Add } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import React, { JSX, useState } from 'react';
+import AddShoeForm from './add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // Тип для элемента коллекции
 interface Item {
@@ -46,6 +48,13 @@ const Collection: React.FC = (): JSX.Element => {
 
   // Состояние для хранения данных
   const [items, setItems] = useState<Item[]>(mockItems);
+  const [showHello, setShowHello] = useState<boolean>(false);
+  
+    // Обработчик нажатия на кнопку
+  const handleAddShoe = () => {
+      // Переключаем состояние
+    setShowHello(!showHello);
+  };
 
   return (
     <div className='collectionMain'>
@@ -63,17 +72,24 @@ const Collection: React.FC = (): JSX.Element => {
           variant="contained"
           className='addShoes'
           endIcon={<Add />}
+          onClick={handleAddShoe}
         >
           Добавить пару
         </Button>
       </div>
-      <div className="collectionItems">
-        {items.map((item) => (
-          <div className="item" key={item.id}>
-            <img src={item.url} alt={item.name} />
-            <p>{item.name}</p>
-          </div>
-        ))}
+      <div>
+        {showHello ? ( // Условный рендеринг
+          <AddShoeForm />
+        ) : (
+        <div className="collectionItems">
+          {items.map((item) => (
+            <div className="item" key={item.id}>
+              <img src={item.url} alt={item.name} />
+              <p>{item.name}</p>
+            </div>
+          ))}
+        </div>
+        )}
       </div>
     </div>
   );

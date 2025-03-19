@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Badge } from '@mui/material';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import dayjs, { Dayjs } from 'dayjs';
+import ShoeCalendar from './get';
 
 // Тип для даты
 interface HighlightedDate {
@@ -57,6 +58,12 @@ const ServerDay = (
 const Calendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs());
+  const [showHello, setShowHello] = useState<boolean>(false);
+
+  const handleAddShoe = () => {
+    // Переключаем состояние
+    setShowHello(!showHello);
+  };
 
   useEffect(() => {
     const initialMonth = dayjs();
@@ -83,35 +90,43 @@ const Calendar: React.FC = () => {
         setSelectedDate(date);
         console.log('Выбрана дата:', date.format('DD.MM.YYYY'));
         console.log('ID подсвеченной даты:', highlightedDate.id);
+
+        handleAddShoe();
       }
     }
   };
 
   return (
-    <div className="calendarContainer">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar
-          sx={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-            backgroundColor: 'white',
-          }}
-          value={selectedDate}
-          onChange={handleDateChange}
-          disableFuture
-          disablePast
-          views={['day']}
-          slots={{
-            day: ServerDay,
-          }}
-          slotProps={{
-            day: {
-              highlightedDates: filteredHighlightedDates,
-            } as any,
-          }}
-        />
-      </LocalizationProvider>
+    <div>
+      {showHello ? ( // Условный рендеринг
+          <ShoeCalendar onClose={handleAddShoe}/>
+        ) : (
+        <div className="calendarContainer">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                backgroundColor: 'white',
+              }}
+              value={selectedDate}
+              onChange={handleDateChange}
+              disableFuture
+              disablePast
+              views={['day']}
+              slots={{
+                day: ServerDay,
+              }}
+              slotProps={{
+                day: {
+                  highlightedDates: filteredHighlightedDates,
+                } as any,
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+        )}
     </div>
   );
 };
