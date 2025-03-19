@@ -2,7 +2,6 @@ import { Add } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import React, { JSX, useState } from 'react';
 import AddShoeForm from './add';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // Тип для элемента коллекции
 interface Item {

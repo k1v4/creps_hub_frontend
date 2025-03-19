@@ -35,7 +35,6 @@ const ShoeCalendar: React.FC<ShoeCalendarProps> = ({ onClose }) => {
             borderRadius={5}
             bgcolor='#FFFFF8'
         >
-            <p>Это параграф</p>
             <img
             src='https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4.png'
             alt='Пример изображения'

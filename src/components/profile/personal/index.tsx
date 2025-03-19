@@ -41,7 +41,7 @@ const Personal: React.FC = (): JSX.Element => {
                     />
 </div>
                 <div className="userInfo">
-                    <TextField margin='normal' label="Пароль" variant="outlined" placeholder='Введите ваш email'/>
+                    <TextField type='password' margin='normal' label="Пароль" variant="outlined" placeholder='Введите ваш email'/>
                     <TextField margin='normal' label="Электронная почта" variant="outlined" placeholder='Введите ваш email'/>
                     <Button 
                         type='submit' 
