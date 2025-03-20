@@ -14,16 +14,15 @@ interface Article {
 
 const Home = () => {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [offset, setOffset] = useState<number>(0); // Начальное смещение
-  const limit = 8; // Количество статей на странице
+  const [offset, setOffset] = useState<number>(0);
+  const limit = 8;
   const navigate = useNavigate();
 
-  // Загрузка данных при монтировании компонента и изменении offset
   useEffect(() => {
     fetchArticles();
   }, [offset]);
 
-  // Функция для загрузки статей
+
   const fetchArticles = async () => {
     try {
       const response = await axios.get(
@@ -38,11 +37,10 @@ const Home = () => {
       }
     } catch (error) {
       console.error('Ошибка при загрузке статей:', error);
-      setArticles([]); // В случае ошибки тоже сбрасываем в пустой массив
+      setArticles([]);
     }
   };
 
-  // Функция для форматирования даты
   const formatDate = (isoDate: string): string => {
     const date = new Date(isoDate);
 
@@ -94,19 +92,19 @@ const Home = () => {
           <button
             onClick={() => {
               if (offset >= limit) {
-                setOffset(offset - limit); // Уменьшаем offset
+                setOffset(offset - limit);
               }
             }}
-            disabled={offset === 0} // Отключаем кнопку, если offset равен 0
+            disabled={offset === 0}
           >
             Назад
           </button>
           <span>Страница {Math.floor(offset / limit) + 1}</span>
           <button
             onClick={() => {
-              setOffset(offset + limit); // Увеличиваем offset
+              setOffset(offset + limit);
             }}
-            disabled={articles.length < limit} // Отключаем кнопку, если статей меньше limit
+            disabled={articles.length < limit}
           >
             Вперёд
           </button>
