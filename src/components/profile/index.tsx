@@ -1,13 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import './style.scss';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Personal from './personal';  
 import Collection from './collection';
 import Articles from './articles';
 import Calendar from './calendar';
 import DeleteProfile from './delete';
-
-
+import ArticleEditor from './quill';
 
 // Тип для элемента статьи
 interface Article {
@@ -91,7 +90,14 @@ const Profile = () => {
             <div className='input-container'>
               <input id='delete' type='radio' name='radio' checked={selectedButton === 'delete'} onChange={handleChange}/>
               <div className='radio-tile'>
-                <label htmlFor='calendar'>Удалить Профиль</label>
+                <label htmlFor='delete'>Удалить Профиль</label>
+              </div>
+            </div>
+
+            <div className='input-container'>
+              <input id='test' type='radio' name='radio' checked={selectedButton === 'test'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='test'>Test</label>
               </div>
             </div>
 

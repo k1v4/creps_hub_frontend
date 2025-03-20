@@ -3,6 +3,7 @@ import { IPropsGetArticle } from '../../../common/types/auth';
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JSX.Element => {
   const { navigate } = props;
@@ -47,7 +48,7 @@ const GetArticlePage: React.FC<IPropsGetArticle> = (props: IPropsGetArticle): JS
         {article ? (
           <>
             <h1>{article.name}</h1>
-            <p>{article.text}</p>
+            <div className='articleHtmlBack' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.text) }} />
           </>
         ) : (
           <p>Загрузка статьи...</p>

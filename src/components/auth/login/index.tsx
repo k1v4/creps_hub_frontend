@@ -50,10 +50,8 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
       setEmail(localEmail);
       setPassword(localPassword);
 
-      // Здесь можно добавить вызов API для входа
       console.log('Вход выполнен:', localEmail);
     } else {
-      // Если валидация не прошла, показываем сообщение об ошибке
       setSnackbarMessage('Пожалуйста, исправьте ошибки в форме');
       setOpenSnackbar(true);
     }
