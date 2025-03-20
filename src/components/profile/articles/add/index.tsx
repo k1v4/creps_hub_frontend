@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Button, TextField, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useAuth } from '../../../../context/AuthContext'; // Импортируем useAuth для получения токена
+import ArticleEditor from '../../quill';
 
 const FashionWeekForm: React.FC = () => {
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [content, setContent] = useState<string>(''); // Состояние для текста статьи
   const [photo, setPhoto] = useState<File | null>(null); // Состояние для хранения загруженного фото
   const { getTokens } = useAuth(); // Получаем токены из контекста
 
@@ -14,16 +15,11 @@ const FashionWeekForm: React.FC = () => {
     setTitle(event.target.value);
   };
 
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
-  };
-
-  // Обработчик загрузки фото
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       if (file.type === 'image/png' || file.type === 'image/jpeg') {
-        setPhoto(file); // Сохраняем файл в состоянии
+        setPhoto(file);
       } else {
         alert('Пожалуйста, загрузите изображение в формате PNG или JPG.');
       }
@@ -35,33 +31,30 @@ const FashionWeekForm: React.FC = () => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = (reader.result as string).split(',')[1]; // Убираем префикс "data:image/..."
+        const base64String = (reader.result as string).split(',')[1];
         resolve(base64String);
       };
       reader.onerror = reject;
-      reader.readAsDataURL(file); // Читаем файл как Data URL
+      reader.readAsDataURL(file);
     });
   };
 
-  // Обработчик публикации статьи
-  const handlePublish = async () => {
+  // Обработчик сохранения статьи
+  const handleSaveArticle = async () => {
     if (!photo) {
       alert('Пожалуйста, загрузите фото.');
       return;
     }
 
     try {
-      // Читаем фото как base64
       const imageData = await readFileAsBase64(photo);
 
-      // Получаем JWT-токен
       const tokens = getTokens();
       if (!tokens?.accessToken) {
         alert('Ошибка аутентификации. Пожалуйста, войдите снова.');
         return;
       }
 
-      // Отправляем данные на сервер
       const response = await fetch('http://localhost:8082/api/v1/articles', {
         method: 'POST',
         headers: {
@@ -70,7 +63,7 @@ const FashionWeekForm: React.FC = () => {
         },
         body: JSON.stringify({
           name: title, // Название статьи
-          text: description, // Текст статьи
+          text: content, // Текст статьи
           image_name: photo.name, // Имя файла с расширением
           image_data: imageData, // Изображение в формате base64
         }),
@@ -83,9 +76,8 @@ const FashionWeekForm: React.FC = () => {
       const result = await response.json();
       console.log('Успешно отправлено:', result);
 
-      // Очищаем форму после успешной отправки
       setTitle('');
-      setDescription('');
+      setContent('');
       setPhoto(null);
     } catch (error) {
       console.error('Ошибка:', error);
@@ -97,14 +89,14 @@ const FashionWeekForm: React.FC = () => {
     <form className='addArticle'>
       <Box>
         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
-        <input
-          type="file"
-          accept="image/png, image/jpeg" // Разрешаем только PNG и JPG
-          onChange={handlePhotoChange}
-          style={{ display: 'none' }}
-          id="upload-photo"
-        />
-        <label htmlFor="upload-photo">
+          <input
+            type="file"
+            accept="image/png, image/jpeg" // Разрешаем только PNG и JPG
+            onChange={handlePhotoChange}
+            style={{ display: 'none' }}
+            id="upload-photo"
+          />
+          <label htmlFor="upload-photo">
             <Box
               sx={{
                 width: '20vw', // Размер квадрата
@@ -124,7 +116,7 @@ const FashionWeekForm: React.FC = () => {
               <AddIcon sx={{ fontSize: '48px', color: '#F9F8F3' }} /> {/* Иконка плюса */}
             </Box>
           </label>
-      </div>
+        </div>
 
         <TextField
           className='articleHeaderInput'
@@ -138,61 +130,30 @@ const FashionWeekForm: React.FC = () => {
             backgroundColor: 'transparent',
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: 'transparent', // Убираем границу по умолчанию
+                borderColor: 'transparent',
               },
               '&:hover fieldset': {
-                borderColor: 'transparent', // Убираем границу при наведении
+                borderColor: 'transparent',
               },
               '&.Mui-focused fieldset': {
-                borderColor: 'transparent', // Убираем границу при фокусе
+                borderColor: 'transparent',
               },
             },
             '& .MuiInputLabel-root': {
-              color: '#F9F8F399', // Прозрачный цвет текста метки
+              color: '#F9F8F399',
             },
             '& .MuiInputBase-input': {
-              color: '#F9F8F399', // Прозрачный цвет текста ввода
+              color: '#F9F8F399',
             },
           }}
         />
-        <TextField
-          margin="normal"
-          label="Текст"
-          variant="outlined"
-          placeholder="Введите текст статьи"
-          value={description}
-          onChange={handleDescriptionChange}
-          fullWidth
-          multiline // Включаем многострочный режим
-          minRows={3} // Начальное количество строк
-          maxRows={10} // Максимальное количество строк
-          sx={{
-            backgroundColor: 'transparent',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'transparent', // Убираем границу по умолчанию
-              },
-              '&:hover fieldset': {
-                borderColor: 'transparent', // Убираем границу при наведении
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'transparent', // Убираем границу при фокусе
-              },
-            },
-            '& .MuiInputLabel-root': {
-              color: '#F9F8F399', // Прозрачный цвет текста метки
-            },
-            '& .MuiInputBase-input': {
-              color: '#F9F8F399', // Прозрачный цвет текста ввода
-            },
-          }}
-        />
+        <ArticleEditor content={content} setContent={setContent} />
         <div className='addButtons'>
           <Button
             className='add'
             variant="contained"
             color="primary"
-            onClick={handlePublish}
+            onClick={handleSaveArticle}
           >
             Опубликовать
           </Button>
@@ -202,7 +163,7 @@ const FashionWeekForm: React.FC = () => {
             color="primary"
             onClick={() => {
               setTitle('');
-              setDescription('');
+              setContent('');
               setPhoto(null);
             }}
           >

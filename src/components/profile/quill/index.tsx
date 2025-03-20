@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const ArticleEditor = () => {
-  const [content, setContent] = useState("");
+interface ArticleEditorProps {
+  content: string;
+  setContent: (content: string) => void;
+}
 
+const ArticleEditor: React.FC<ArticleEditorProps> = ({ content, setContent }) => {
   // Настройка модулей
   const modules = {
     toolbar: [
@@ -48,54 +51,16 @@ const ArticleEditor = () => {
     "image",
   ];
 
-  const handleSaveArticle = async () => {
-    const title = prompt("Введите заголовок статьи:");
-    if (!title) return;
-
-    // Отправляем запрос на сервер
-    try {
-      const response = await fetch("http://localhost:8080/save-article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, content }),
-      });
-
-      if (response.ok) {
-        alert("Статья успешно сохранена!");
-      } else {
-        alert("Ошибка при сохранении статьи");
-      }
-    } catch (error) {
-      console.error("Ошибка:", error);
-      alert("Ошибка при отправке запроса");
-    }
-  };
-
   return (
     <div>
       <ReactQuill
         value={content}
         onChange={setContent}
         modules={modules} // Подключаем модули
-        formats={formats} // Подключаем форматы
+        formats={formats}
         placeholder="Напишите свою статью..."
+        style={{ color: "white", margin: '2% 0'}}
       />
-      <button
-        onClick={handleSaveArticle}
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Сохранить статью
-      </button>
     </div>
   );
 };

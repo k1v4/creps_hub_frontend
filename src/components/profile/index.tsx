@@ -45,14 +45,10 @@ const Profile = () => {
         return <Calendar />
       case 'delete':
         return <DeleteProfile />
-      case 'test':
-        return <ArticleEditor />
       default:
         return <div>Другой раздел</div>;
     }
   };
-
-  const articleEditor = useMemo(() => <ArticleEditor />, []);
 
   return (
     <div className='profileRoot'>
