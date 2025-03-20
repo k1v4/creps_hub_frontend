@@ -94,13 +94,6 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className='input-container'>
-              <input id='test' type='radio' name='radio' checked={selectedButton === 'test'} onChange={handleChange}/>
-              <div className='radio-tile'>
-                <label htmlFor='test'>Test</label>
-              </div>
-            </div>
-
           </div>
         </div>
       </header>
