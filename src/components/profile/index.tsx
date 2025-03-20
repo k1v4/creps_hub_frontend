@@ -5,6 +5,7 @@ import Personal from './personal';
 import Collection from './collection';
 import Articles from './articles';
 import Calendar from './calendar';
+import DeleteProfile from './delete';
 
 
 
@@ -43,6 +44,8 @@ const Profile = () => {
         return <Articles />;
       case 'calendar':
         return <Calendar />
+      case 'delete':
+        return <DeleteProfile />
       default:
         return <div>Другой раздел</div>;
     }
@@ -82,6 +85,13 @@ const Profile = () => {
               <input id='calendar' type='radio' name='radio' checked={selectedButton === 'calendar'} onChange={handleChange}/>
               <div className='radio-tile'>
                 <label htmlFor='calendar'>Календарь релизов</label>
+              </div>
+            </div>
+
+            <div className='input-container'>
+              <input id='delete' type='radio' name='radio' checked={selectedButton === 'delete'} onChange={handleChange}/>
+              <div className='radio-tile'>
+                <label htmlFor='calendar'>Удалить Профиль</label>
               </div>
             </div>
 

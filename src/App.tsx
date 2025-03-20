@@ -11,13 +11,12 @@ function App() {
     <div className="app">
       <Routes>
         <Route element={<PrivateRoute />}>
-          
+          <Route path='/' element={<MainHome />}/>
+          <Route path='article/:id' element={<MainHome />}/>
+          <Route path='profile' element={<Profile />}/>
         </Route>
-        <Route path='/' element={<MainHome />}/>
-        <Route path='article' element={<MainHome />}/>
         <Route path='login' element={<AuthRootComponent />}/>
         <Route path='register' element={<AuthRootComponent />}/>
-        <Route path='profile' element={<Profile />}/>
       </Routes>
     </div>
   );

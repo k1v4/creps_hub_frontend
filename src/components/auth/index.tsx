@@ -1,4 +1,4 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoginPage from './login';
 import RegisterPage from './register';
@@ -8,6 +8,7 @@ import { instance } from '../../utils/axios';
 import { useAppDispatch } from '../../utils/hook';
 import { login } from '../../store/slice/auth';
 import { AppErrors } from '../../common/errors';
+import { useAuth } from '../../context/AuthContext';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
     const [email, setEmail] = useState('')
@@ -17,6 +18,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
     const location = useLocation()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const { setTokens } = useAuth();
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
@@ -28,10 +30,13 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
                     password,
                 }
                     
-                const user = await instance.post('/api/v1/login', userData)
-                await dispatch(login(user.data))
+                const response = await instance.post('/api/v1/login', userData);
 
-                navigate('/')
+                const { access_token, refresh_token } = response.data; // Используем правильные названия ключей
+                setTokens({ accessToken: access_token, refreshToken: refresh_token }); // Преобразуем их перед сохранением
+                await dispatch(login(response.data));
+
+                navigate('/');
             }catch (e){
                 return e
             }
