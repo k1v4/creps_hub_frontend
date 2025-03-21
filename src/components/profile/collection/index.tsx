@@ -1,5 +1,5 @@
 import { Add } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { JSX, useEffect, useState } from 'react';
 import AddShoeForm from './add';
 import { instance } from '../../../utils/axios';
