@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useAuth } from '../../../../context/AuthContext'; // Импортируем useAuth для получения токена
+import { useAuth } from '../../../context/AuthContext'; // Импортируем useAuth для получения токена
 
-const AddShoeForm: React.FC = () => {
+const AddReleaseForm: React.FC = () => {
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [releaseDate, setReleaseDate] = useState<string>(''); // Состояние для даты релиза
   const [photo, setPhoto] = useState<File | null>(null);
   const { getTokens } = useAuth(); // Получаем токены из контекста
 
@@ -14,8 +14,8 @@ const AddShoeForm: React.FC = () => {
     setTitle(event.target.value);
   };
 
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
+  const handleReleaseDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setReleaseDate(event.target.value); // Обновляем состояние даты
   };
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,21 +24,28 @@ const AddShoeForm: React.FC = () => {
     }
   };
 
+  // Функция для чтения файла как base64
   const readFileAsBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = (reader.result as string).split(',')[1];
+        const base64String = (reader.result as string).split(',')[1]; // Убираем префикс "data:image/..."
         resolve(base64String);
       };
       reader.onerror = reject;
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Читаем файл как Data URL
     });
   };
 
+  // Обработчик публикации
   const handlePublish = async () => {
     if (!photo) {
       alert('Пожалуйста, загрузите фото.');
+      return;
+    }
+
+    if (!releaseDate) {
+      alert('Пожалуйста, выберите дату релиза.');
       return;
     }
 
@@ -54,14 +61,15 @@ const AddShoeForm: React.FC = () => {
       }
 
       // Отправляем данные на сервер
-      const response = await fetch('http://localhost:8081/api/v1/shoes', {
+      const response = await fetch('http://localhost:8083/api/v1/releases', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${tokens.accessToken}`,
         },
         body: JSON.stringify({
-          name: title, // Название обуви
+          name: title,
+          release_date: releaseDate, // Используем выбранную дату
           image_data: imageData, // Изображение в формате base64
           image_name: photo.name, // Имя файла с расширением
         }),
@@ -82,15 +90,17 @@ const AddShoeForm: React.FC = () => {
     }
   };
 
+  // Обработчик отмены
   const handleCancel = () => {
     setTitle('');
-    setDescription('');
+    setReleaseDate('');
     setPhoto(null);
   };
 
   return (
     <form className='addArticle'>
       <Box>
+        {/* Форма загрузки фото */}
         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
           <input
             type="file"
@@ -124,12 +134,49 @@ const AddShoeForm: React.FC = () => {
         {/* Поле для названия */}
         <TextField
           margin="normal"
-          label="Введите название пары"
+          label="Введите название релиза"
           variant="outlined"
-          placeholder="Введите название пары"
+          placeholder="Введите название релиза"
           fullWidth
           value={title}
           onChange={handleTitleChange}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            backgroundColor: 'transparent',
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: 'transparent',
+              },
+              '&:hover fieldset': {
+                borderColor: 'transparent',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: 'transparent',
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: '#F9F8F399',
+            },
+            '& .MuiInputBase-input': {
+              color: '#F9F8F399',
+            },
+          }}
+        />
+
+        {/* Поле для выбора даты */}
+        <TextField
+          margin="normal"
+          label="Дата релиза"
+          type="date" // Тип поля — дата
+          variant="outlined"
+          fullWidth
+          InputLabelProps={{
+            shrink: true, // Чтобы лейбл не накладывался на значение
+          }}
+          value={releaseDate}
+          onChange={handleReleaseDateChange}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -192,4 +239,4 @@ const AddShoeForm: React.FC = () => {
   );
 };
 
-export default AddShoeForm;
+export default AddReleaseForm;

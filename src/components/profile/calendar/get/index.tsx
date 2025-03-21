@@ -12,6 +12,7 @@ interface ShoeDetails {
   id: number;
   name: string;
   release_date: string;
+  image_url: string;
 }
 
 const ShoeCalendar: React.FC<ShoeCalendarProps> = ({ onClose, selectedDateId }) => {
@@ -23,54 +24,53 @@ const ShoeCalendar: React.FC<ShoeCalendarProps> = ({ onClose, selectedDateId }) 
     }
   }, [selectedDateId]);
 
-  // Функция для загрузки данных
   const fetchShoeDetails = async (id: number) => {
     try {
       const response = await axios.get(`http://localhost:8083/api/v1/releases/${id}`);
       console.log('Данные о релизе:', response.data);
-      setShoeDetails(response.data); // Сохраняем данные в состоянии
+      setShoeDetails(response.data);
     } catch (error) {
       console.error('Ошибка при загрузке данных:', error);
     }
   };
 
   return (
-    <div>
-        <Button
-            variant="contained"
-            sx={{
-            background: 'transparent',
-            color: '#F9F8F3',
-            borderRadius: '15px',
-            border: '1px solid #F9F8F3',
-            marginLeft: '5%',
-            }}
-            className='back-button'
-            onClick={onClose}
-            startIcon={<ArrowBackIcon />}
-        >
-            Назад
-        </Button>
-        <Box
-            display='flex'
-            justifyContent='center'
-            alignItems='center'
-            flexDirection='column'
-            maxWidth={640}
-            margin='auto'
-            padding={1}
-            borderRadius={5}
-            bgcolor='#FFFFF8'
-        >
-            <img
-              src='https://82a3fa46-643f-4a21-8a10-c2889596892b.selstorage.ru/TBA.jpg'
-              alt='Пример изображения'
-              style={{ maxWidth: '100%', height: 'auto', border: '2px solid black', borderRadius: '20px' }}
-            />
-            <h1>{shoeDetails ? shoeDetails.name : 'Загрузка...'}</h1>
-        </Box>
+    <div className='celendarEvent'>
+      <Button
+        variant="contained"
+        sx={{
+          background: 'transparent',
+          color: '#F9F8F3',
+          borderRadius: '15px',
+          border: '1px solid #F9F8F3',
+          marginLeft: '5%',
+        }}
+        className='back-button'
+        onClick={onClose}
+        startIcon={<ArrowBackIcon />}
+      >
+        Назад
+      </Button>
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        flexDirection='column'
+        maxWidth={640}
+        margin='auto'
+        padding={1}
+        borderRadius={5}
+        bgcolor='#FFFFF8'
+      >
+        <div className="image-container">
+          <img
+            src={shoeDetails?.image_url}
+            alt={shoeDetails?.name}
+          />
+        </div>
+        <h1>{shoeDetails ? shoeDetails.name : 'Загрузка...'}</h1>
+      </Box>
     </div>
-    
   );
 };
 

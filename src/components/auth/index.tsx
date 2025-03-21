@@ -1,4 +1,4 @@
-import React, { JSX, useState, useContext } from 'react';
+import React, { JSX, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoginPage from './login';
 import RegisterPage from './register';
@@ -11,57 +11,68 @@ import { AppErrors } from '../../common/errors';
 import { useAuth } from '../../context/AuthContext';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [retryPassword, setRetryPassword] = useState('')
-    const [userName, setUserName] = useState('')
-    const location = useLocation()
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [retryPassword, setRetryPassword] = useState('');
+    const [userName, setUserName] = useState('');
+    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { setTokens } = useAuth();
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        if (location.pathname === '/login'){
-            try{
+        if (location.pathname === '/login') {
+            try {
                 const userData = {
                     email,
                     password,
-                }
-                    
-                const response = await instance.post('/api/v1/login', userData);
+                };
 
-                const { access_token, refresh_token } = response.data; // Используем правильные названия ключей
-                setTokens({ accessToken: access_token, refreshToken: refresh_token }); // Преобразуем их перед сохранением
+                const response = await instance.post('/api/v1/login', userData);               
+
+                const { access_token, refresh_token, access_id } = response.data;
+
+                setTokens({ accessToken: access_token, refreshToken: refresh_token });
+
+                localStorage.setItem('access_id', access_id);
+
                 await dispatch(login(response.data));
 
                 navigate('/');
-            }catch (e){
-                return e
+            } catch (e) {
+                console.error('Ошибка при входе:', e);
+                throw e;
             }
-        } else{
-            if (password === retryPassword){
-                try{
-                    const userData = {
-                        email,
-                        userName,
-                        password
-                    }
-                        
-                    const newUserId = await instance.post('/api/v1/register', userData)
-                    await dispatch(login(newUserId.data))
+        } else {
+            try{
+                if (password === retryPassword) {
+                    try {
+                        const userData = {
+                            email,
+                            userName,
+                            password,
+                        };
     
-                    navigate('/login')
-                } catch(e){
-                    return e
+                        const newUserId = await instance.post('/api/v1/register', userData);
+                        await dispatch(login(newUserId.data));
+    
+                        // После успешной регистрации перенаправляем на страницу входа
+                        navigate('/login');
+                    } catch (e) {
+                        console.error('Ошибка при регистрации:', e);
+                        throw e;
+                    }
+                } else {
+                    throw new Error(AppErrors.PasswordNotMatch);
                 }
-
-            } else{
-                throw new Error(AppErrors.PasswordNotMatch)
+            } catch (e){
+                console.error('Ошибка при входе:', e);
+                throw e;
             }
-        } 
-    }
+        }
+    };
 
     return (
         <div className='root'>
@@ -79,20 +90,22 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
                     bgcolor='#FFFFF8'
                 >
                     {
-                        location.pathname === '/login' 
-                            ? <LoginPage setEmail={setEmail} setPassword={setPassword} navigate={navigate}/> : location.pathname === '/register' 
-                                ? <RegisterPage 
-                                    setEmail={setEmail} 
-                                    setPassword={setPassword} 
-                                    setRetryPassword={setRetryPassword} 
+                        location.pathname === '/login'
+                            ? <LoginPage setEmail={setEmail} setPassword={setPassword} navigate={navigate} />
+                            : location.pathname === '/register'
+                                ? <RegisterPage
+                                    setEmail={setEmail}
+                                    setPassword={setPassword}
+                                    setRetryPassword={setRetryPassword}
                                     setUserName={setUserName}
                                     navigate={navigate}
-                                /> : null
+                                />
+                                : null
                     }
                 </Box>
             </form>
         </div>
     );
-}
+};
 
 export default AuthRootComponent;
